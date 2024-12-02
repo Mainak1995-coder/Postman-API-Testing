@@ -1,0 +1,5 @@
+1. Install Python and Check Version-> python --version
+2. Install Flask-> pip install flask
+3. Navigate to project directory and open CMD
+4. Run the flask app-> python app.py
+5. Open this on your browser to check-> http://127.0.0.1:5000

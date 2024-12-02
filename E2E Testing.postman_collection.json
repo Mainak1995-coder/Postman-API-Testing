@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "9ddde4ad-dfae-421b-910e-fed6c5e0bd2d",
+		"name": "E2E Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12484549"
+	},
+	"item": [
+		{
+			"name": "POST New Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const getResponse=pm.response.json();\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.globals.set(\"Prd_ID\", getResponse.product.id);\r",
+							"    pm.globals.set(\"Prd_NM\",getResponse.product.name);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Product Test\",\r\n        \"price\": 500\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Record",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const productID = pm.globals.get(\"Prd_ID\");\r",
+							"const productName = pm.globals.get(\"Prd_NM\");\r",
+							"const getProductResponse = pm.response.json(); // Defined the getProductResponse variable\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Product ID matches\", function () {\r",
+							"    pm.expect(getProductResponse.id).to.eql(productID);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Product name matched\", function () {\r",
+							"    pm.expect(getProductResponse.name).to.eql(productName);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/products/{{Prd_ID}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"{{Prd_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const productId = pm.globals.get(\"Prd_ID\");\r",
+							"const updatedProductName = pm.globals.get(\"Up_Prd_Name\");\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);  // Ensure the status code is 200 (success)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Product name updated successfully\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.product.id).to.eql(productId);\r",
+							"    pm.expect(response.product.name).to.eql(updatedProductName);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"name\": \"{{Up_Prd_Name}}\", \r\n \"price\": 1000.0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/products/{{Prd_ID}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"{{Prd_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products"
+					]
+				},
+				"description": "GET All Record"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/products/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
